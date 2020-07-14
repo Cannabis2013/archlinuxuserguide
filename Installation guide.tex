@@ -1,0 +1,212 @@
+\documentclass{article}
+
+%Imports
+
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{xparse}
+
+% Figures and images related
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage[utf8]{inputenc}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+	backgroundcolor=\color{black},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+	basicstyle=\small\color{white},        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	commentstyle=\color{mygreen},    % comment style
+	deletekeywords={...},            % if you want to delete keywords from the given language
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                	 % start line enumeration with line 1000
+	frame=visible,                   % adds a frame around the code
+	columns=flexible,
+	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	keywordstyle=\color{yellow},     % keyword style
+	language=[Sharp]C,                 % the language of the code
+	morekeywords={*,...},            % if you want to add more keywords to the set
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+	rulecolor=\color{white},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false,          % underline spaces within strings only
+	showtabs=false,                  % show tabs within strings adding particular underscores
+	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+	stringstyle=\color{mymauve},     % string literal style
+	tabsize=2,	                     % sets default tabsize to 2 spaces
+	title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+
+\pagestyle{empty}
+
+% Remove "New paragraph" indentation
+
+\setlength{\parindent}{0cm}
+
+\newcommand{\setDefaultParIndent}{\setlength{\parindent}{1cm}}
+\newcommand{\setNoParIndent}{\setlength{\parindent}{0cm}}
+
+% My macros
+
+\newcommand{\fig}[3]{\begin{figure}[H]
+		\centering
+		\includegraphics[width=#2]{#1}
+		\caption{#3}
+		\label{fig:#1}
+\end{figure}}
+
+\newcommand{\frontFig}[2]{\begin{figure}[H]
+		\centering
+		\includegraphics[width=#2]{#1}
+		\label{fig:#1}
+\end{figure}}
+
+\newcommand{\VarPlaceHolder}[1]{\{\{ #1 \}\}}
+
+\newcommand{\preSection}[1]{\begin{center}
+		\huge \textbf{#1}
+\end{center}}
+
+\newcommand{\preSectionWithSubTitle}[2]{\begin{center}
+		\huge \textbf{#1}\\
+			\small \textit{#2}
+\end{center}}
+
+\newcommand{\code}[1]{\begin{center}
+		\textit{\texttt{#1}}
+\end{center}}
+\newcommand{\inlineCode}[1]{\textit{\texttt{#1}}}
+
+\title{Installation tutorial \\ \small Arch Linux}
+\author{Martin Hansen}
+
+\begin{document}
+	\frenchspacing
+	\ttfamily
+	
+	\maketitle
+	\pagebreak
+	\begin{center}
+		\Large Introduction
+	\end{center}
+	
+	Installing Arch Linux can be a time consuming and cumbersome process, demanding above than average skills when it comes to basic filestructure and terminal commands. The most common way to install Arch on your desktop or laptop, and especially if you haven't installed Arch on any systems before, would be to follow the official guide provided by the great community of Arch. The guide provides the most basic setup related to setting up internet connection, adjusting the clock according to your timezone and which filesystem and partition table to use. But as many other guides it assumes that the user who reads it, possess a certain amount of skills and is able to perform basic operations within the domain of Linux operation systems which to some extend exceeds the skills actually possessed by the user. A result of that assumption, guides usually ommits certain steps or details which leads to more google searching, and more time consumption, and in some situations, even frustration. This document is not critical of the official guide, it is in large parts based on the official guide, but more limited and constrained by my experience with Arch Linux. Their exists multiple configurations and not two systems are necessarily identical, so this document only tries to provide a somehow tested and working method to perform a succesfull Arch Linux installation. I provide no garantees whatsoever that this guide will work flawless on your system. Expect challenges.\\
+	
+	Therefore, if anything doesn't turn out the way you have expected, you should use the official Arch Linux Installation guide as fallback, and with the use of Google, the chances that your installation will become a success is rather good. But you have to mark my words: Arch Linux is not for the faint of heart, you have to be patient and determined to archieve what many of us already have archieved. Then you will be greatly rewarded with a flexible and easy to update operation system, and most importantly, the knowlede you will gain of the whole process of installing Arch Linux.\\
+	
+	I wish you the best of luck to archive godlike status and may you never fall back to Ubuntu or Windows again.
+	
+	\pagebreak
+	% TOC
+	\pagebreak
+	
+	\section{Basic requirements}
+	
+	\begin{itemize}
+		\item Of course a desktop/laptop. This guide can be considered general as I have succesfully installed Arch on a 2011 Macbook Pro without mentionworthy issues. And of course I have also tried to install on non-Apple devices like my desktop.
+		\item A USB key with approximately 1 gb of available space and image of Arch Linux (the image itself takes nearly 700 mb of your space). To burn the image to USB I recommend Rufus or the tools recommended by the Arch community site. 
+		\item A great deal of patience and determinism
+		\item Maybe a ethernet cable or phone with usb tethering available. This guide only provides internet connection through cabled devices like USB tethering and ethernet cables. I maybe adding a way to setup wifi later on.
+		
+	\end{itemize}
+	\section{Boot from USB and partitioning harddrives}
+	
+	First you have to create a bootable USB key from the official Arch image. The image is obtained from the \href{https://www.archlinux.org/download/}{official Arch Linux website}. I recommend to download the torrent to minimize the risk of file corruption as torrent does automatic integry check through hashing.\\
+	
+	Before booting, you have to decide whether you would prefer booting in BIOS or UEFI mode, and uncover if your system after all is UEFI compliant. Most computers today are, but if you have decided to install Arch on your 10-15 year old desktop, then your only option might be BIOS. You will also need to assess pros and cons regarding UEFI or BIOS installation. If you want to multiboot, you might go with BIOS as issues exists with newer Windows and the use of GPT partition tables (which is the recommended partition table to use if you want to install Arch in UEFI mode). I will avoid to my fullest extend to divide this guide into a BIOS or UEFI section as most of the difference is related to the selection of boot loader and the creation of a UEFI partition. I will give an in-depth explanation of this issue in an appropriate section regarding the bootloader.\\
+	
+	 \subsection{Booting from the USB}
+	 
+	 Booting from the USB should lead you to a command prompt similar to DOS or CMD in Windows, and you may already be a little scary at this point. But you shouldn't be. First, you should establish an internet connection by your already plugged in ethernet cable; otherwise, this may be the time. If your keyboard layout is messed up, you may run the following command:
+	 
+	 \code{loadkeys dk}
+	 
+	 And to check if you are connected to the whole world:
+	 
+	 \code{ping www.google.dk}
+	 
+	 If not, then try the following:
+	 
+	 \code{systemctl enable dhcpcd}
+	 
+	 Actually, the last snippet may not work at all as I have only tested it in a mounted environment\footnote{Which means I have mounted and installed the system on my local harddrive}. I will as of this mark this command as dubios in the current context, but worth to try.\\
+	 
+	 \subsection{Disk partitioning}
+	 
+	 For this section, I will use a tool called \textit{FDISK}, which you may have heard of. It is a command line tool and is able to delete/create partitions needed for the installation. Here, I hope you have decided with regard to the BIOS or UEFI options I mentioned in the previous sections as you have to create another boot partition for the UEFI way. This is no big deal after all, if you prefer the legacy way, you can choose a MBR partition table and you have to make sure, that the partition you want to be your primary, is flagged as bootable.\\
+	 
+	 First, you have to make sure what partitions are availab.le to you. The following command provides you with a list of disks and their partitions:
+	 
+	 \code{fdisk -l}
+	 
+	 You may notice that disks is denoted with paths instead of names, and the structure is like \textit{/dev/sd\{x\}} for disks, and \textit{/dev/sd\{a\}\{y\}} for partitions, where \textit{x} and \textit{y} is a letter and a number, respectively. To wipeout the whole disk where you want to install Arch, you have to enter the main interface of \textit{FDISK} with the appropriate disk loaded into it. This is done by the following command:
+	 
+	 \code{fdisk /dev/sd\{x\}}
+	 
+	 You will be presented with a simple menu interface where each entry is denoted by a letter. Whatever changes you may perform in this mode is not done until written by pressing 'w'.\\
+	 
+	 You delete a partition by pressing 'd' and then choosing an appropriate number \textit{i} (you may have multiple partitions) corresponding to the partition at \textit{i}'th place. Then repeat this procedure until no partitions left. When finished, press 'w' to write your settings; otherwise, press 'q' to discard and exit. 
+	 
+	 \subsubsection{Legacy boot (BIOS)}
+	 
+	 If you went with the legacy option, you probably want to create a MBR (Master Boot Record) partition table.. Follow the following instructions:
+	 \begin{itemize}
+	 	\item Locate "Create an empty MBR partition table" and press its corresponding key (it is typical one of the last entries in the menu)
+	 	\item Then create a partition by pressing 'n' and then press 'ENTER' twice as you go with default values of start and end sectors. (You may enter a different end sector if you don't want to use up all the available space. Ex. : +384M, if you want a partition of size 384 MB)
+	 	\item The press 'w' to write your changes and you should see your new partition if your run \inlineCode{fdisk -l}
+	 	\item Then you have to enter DISKMODE, now with the new partition loaded. You do this by running the following command:
+	 	\code{fdisk /dev/sd\{x\}\{y\}}
+	 	\item Then a slightly modified menu show up with an option to toggle a boot flag by pressing a key. Toggle this flag by pressing the corresponding key and exit with 'w'. 	
+	 \end{itemize}
+ 	 
+ 	 You should now have a bootable partition and you can skip the next section where the UEFI option will be described.
+ 	 \subsubsection{UEFI boot}
+ 	 
+ 	 The UEFI way can be a little more complicated with regard to setup due to the extra partition and BIOS settings required, but it's not impossible.  You have to make sure that you have created two partitions, one for the UEFI bootloader of size in the range 256 - 384 MB, and a partition for the system taking up the remaining space. \\
+ 	 
+ 	 This can be summarized to the following outline:
+ 	 
+ 	 \begin{itemize}
+ 	 	\item If not done, create an empty GPT partition table for the disk
+ 	 	\item Create a partition of size in the range 256 - 512 MB (I would recommend 384MB, I think that will suffice)
+ 	 	\item Create a partition filling up the remaing space
+ 	 \end{itemize}
+  
+  \subsection{Mount disks, chroot into and install files}
+  
+  The next step is to mount the disks at appropriate locations. First you want to mount your primary partition at \inlineCode{/mnt} in order to mount your boot partition, which is mounted on a location within \inlineCode{/mnt}.\\
+  
+  Run the following command to mount the primary partition:
+  
+  \code{mount /dev/sd\{a\}\{x\} /mnt}
+  
+  Then you may need to make make the folder where you want to mount your boot partition. This can be done by chrooting into your newly mounted disk by running the following command:
+  
+  \code{arch-chroot /mnt}
+  
+  Then create a folder named \textit{efi} and chroout out by typing \inlineCode{exit}.\\
+  
+  Run the following command to mount your boot partition to your newly created folder\footnote{I use same letters to denote same partitions, but this is not required. You may have the bootloader on another disk if you prefer.}:
+  
+  \code{mount /dev/sd\{a\}\{x\} /mnt/efi}
+  
+ 	 
+\end{document}
