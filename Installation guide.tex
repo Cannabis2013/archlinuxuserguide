@@ -10,6 +10,12 @@
 \usepackage{graphicx}
 \usepackage{float}
 
+% Font
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+
 \usepackage{listings}
 \usepackage{color}
 \usepackage[utf8]{inputenc}
@@ -100,7 +106,6 @@
 
 \begin{document}
 	\frenchspacing
-	\ttfamily
 	
 	\maketitle
 	\pagebreak
@@ -108,14 +113,15 @@
 		\Large Introduction
 	\end{center}
 	
-	Installing Arch Linux can be a time consuming and cumbersome process, demanding above than average skills when it comes to basic filestructure and terminal commands. The most common way to install Arch on your desktop or laptop, and especially if you haven't installed Arch on any systems before, would be to follow the official guide provided by the great community of Arch. The guide provides the most basic setup related to setting up internet connection, adjusting the clock according to your timezone and which filesystem and partition table to use. But as many other guides it assumes that the user who reads it, possess a certain amount of skills and is able to perform basic operations within the domain of Linux operation systems which to some extend exceeds the skills actually possessed by the user. A result of that assumption, guides usually ommits certain steps or details which leads to more google searching, and more time consumption, and in some situations, even frustration. This document is not critical of the official guide, it is in large parts based on the official guide, but more limited and constrained by my experience with Arch Linux. Their exists multiple configurations and not two systems are necessarily identical, so this document only tries to provide a somehow tested and working method to perform a succesfull Arch Linux installation. I provide no garantees whatsoever that this guide will work flawless on your system. Expect challenges.\\
+	Installing Arch Linux can be a time consuming and cumbersome process, demanding above than average skills when it comes to basic filestructure and terminal commands. The most common way to install Arch on your desktop or laptop, and especially if you haven't installed Arch on any systems before, would be to follow the official guide provided by the great community of Arch. This guide provides the most basic setup related to setting up internet connection, adjusting the clock according to your timezone and which filesystem and partition table to use. But as many other guides it assumes that the user who reads it, possess a certain amount of skills and is able to perform basic operations within the domain of Linux which may to some extend exceeds the skills actually possessed by the user. A result of that assumption, guides usually ommits certain steps or details which leads to more google searching, and more time consumption, and in some situations, even frustration. This document is not critical of the official guide, it is in large parts based on the official guide, but more limited and constrained by the authors experience with Arch Linux. There exists multiple configurations and not two systems are necessarily identical, so this document only tries to provide a somehow tested and working method to perform a succesfull Arch Linux installation. I provide no garantees whatsoever that this guide will work flawless on your system. Expect challenges.\\
 	
 	Therefore, if anything doesn't turn out the way you have expected, you should use the official Arch Linux Installation guide as fallback, and with the use of Google, the chances that your installation will become a success is rather good. But you have to mark my words: Arch Linux is not for the faint of heart, you have to be patient and determined to archieve what many of us already have archieved. Then you will be greatly rewarded with a flexible and easy to update operation system, and most importantly, the knowlede you will gain of the whole process of installing Arch Linux.\\
 	
-	I wish you the best of luck to archive godlike status and may you never fall back to Ubuntu or Windows again.
+	The author wishes you the best of luck to archive godlike status and may you never fall back to Ubuntu or Windows again.
 	
 	\pagebreak
 	% TOC
+	\tableofcontents
 	\pagebreak
 	
 	\section{Basic requirements}
@@ -131,7 +137,9 @@
 	
 	First you have to create a bootable USB key from the official Arch image. The image is obtained from the \href{https://www.archlinux.org/download/}{official Arch Linux website}. I recommend to download the torrent to minimize the risk of file corruption as torrent does automatic integry check through hashing.\\
 	
-	Before booting, you have to decide whether you would prefer booting in BIOS or UEFI mode, and uncover if your system after all is UEFI compliant. Most computers today are, but if you have decided to install Arch on your 10-15 year old desktop, then your only option might be BIOS. You will also need to assess pros and cons regarding UEFI or BIOS installation. If you want to multiboot, you might go with BIOS as issues exists with newer Windows and the use of GPT partition tables (which is the recommended partition table to use if you want to install Arch in UEFI mode). I will avoid to my fullest extend to divide this guide into a BIOS or UEFI section as most of the difference is related to the selection of boot loader and the creation of a UEFI partition. I will give an in-depth explanation of this issue in an appropriate section regarding the bootloader.\\
+	Before booting, you have to decide whether you would prefer booting in BIOS or UEFI mode, and uncover if your system after all is UEFI compliant. Most computers today are, but if you have decided to install Arch on your 10-15 year old desktop, then your only option might be BIOS. You will also need to assess pros and cons regarding UEFI or BIOS installation. If you want to multiboot, you might go with BIOS as issues exists with newer Windows and the use of GPT partition tables (which is the recommended partition table to use if you want to install Arch in UEFI mode). \\
+	
+	I will avoid to my fullest extend to divide this guide into a BIOS or UEFI section as most of the difference is related to the selection of boot loader and the creation of partitions. Furthermore, we will refer the two ways mentioned before as either  the  \textit{legacy option} or the  \textit{UEFI option}.\\
 	
 	 \subsection{Booting from the USB}
 	 
@@ -147,7 +155,7 @@
 	 
 	 \code{systemctl enable dhcpcd}
 	 
-	 Actually, the last snippet may not work at all as I have only tested it in a mounted environment\footnote{Which means I have mounted and installed the system on my local harddrive}. I will as of this mark this command as dubios in the current context, but worth to try.\\
+	 Actually, the last snippet may not work at all as the author have only tested it in a mounted environment\footnote{Which means the author have mounted and installed the system on his local harddrive}. The author will as of this, mark this command as dubios in the current context, but worth to try.\\
 	 
 	 \subsection{Disk partitioning}
 	 
@@ -167,11 +175,11 @@
 	 
 	 \subsubsection{Legacy boot (BIOS)}
 	 
-	 If you went with the legacy option, you probably want to create a MBR (Master Boot Record) partition table.. Follow the following instructions:
+	 If you you decide to opt for a legacy boot option you probably want to create a MBR (Master Boot Record) partition table. Follow the below instructions:
 	 \begin{itemize}
 	 	\item Locate "Create an empty MBR partition table" and press its corresponding key (it is typical one of the last entries in the menu)
 	 	\item Then create a partition by pressing 'n' and then press 'ENTER' twice as you go with default values of start and end sectors. (You may enter a different end sector if you don't want to use up all the available space. Ex. : +384M, if you want a partition of size 384 MB)
-	 	\item The press 'w' to write your changes and you should see your new partition if your run \inlineCode{fdisk -l}
+	 	\item Then press 'w' to write your changes and you should see your new partition if your run \inlineCode{fdisk --list}
 	 	\item Then you have to enter DISKMODE, now with the new partition loaded. You do this by running the following command:
 	 	\code{fdisk /dev/sd\{x\}\{y\}}
 	 	\item Then a slightly modified menu show up with an option to toggle a boot flag by pressing a key. Toggle this flag by pressing the corresponding key and exit with 'w'. 	
@@ -190,23 +198,73 @@
  	 	\item Create a partition filling up the remaing space
  	 \end{itemize}
   
-  \subsection{Mount disks, chroot into and install files}
+  \subsection{Format the partitions}
   
-  The next step is to mount the disks at appropriate locations. First you want to mount your primary partition at \inlineCode{/mnt} in order to mount your boot partition, which is mounted on a location within \inlineCode{/mnt}.\\
+  Before you can mount the partitions you have to format them. For the primary partition, which is the partition designated for Arch Linux, i recommend using the \textit{ext4} filesystem. You can run the following command:
   
-  Run the following command to mount the primary partition:
+  \code{mkfs.ext4 /dev/sd\{x\}\{y\}}
   
-  \code{mount /dev/sd\{a\}\{x\} /mnt}
+  Where \textit{/dev/sd\{x\}\{y\}} is the primary partition, and \textit{x} and \textit{y} are the corresponding drive and partition numbers.\\
   
-  Then you may need to make make the folder where you want to mount your boot partition. This can be done by chrooting into your newly mounted disk by running the following command:
+  \textbf{Note for the UEFI option: } For the EFI system partition, you have to format the boot partition in accordance with the UEFI requirements. That is, you may have to use the \textit{FAT} filesystem\footnote{Please note, that you are not necessarily constrained to FAT, but it's more like the safe choice for now.}:
+  
+  \code{mkfs.fat -F32 /dev/sd\{x\}\{z\}}
+  
+  \section{Install Arch linux}
+  
+  \subsection*{Mount the partitions}
+  
+  Now that you have created the necessary partitions you are now in a position where you may want to mount the partitions.  You can use \textit{/mnt} as mount point for an example. Run the following command:
+  
+  \code{mount /dev/sd\{x\}\{y\} /mnt}
+  
+  \textbf{Note for UEFI option:} If you decided to go with UEFI, you will also have to mount your \textit{EFI System Partition} in the boot folder:
+  
+  \code{mount /dev/sd\{x\}\{z\} /mnt/boot}  
+  
+  \subsection*{install Arch}
+  
+  Then you have reached the point where you have to install Arch linux files onto your mounted partition. Run the following command:
+  
+  \code{pacstrap /mnt base linux linux-firmware}
+  
+  \subsection*{arch-chroot into Arch}
+  
+  To enter your new Arch installation you can chroot into your new system with \textit{arch-chroot} by the following command:
   
   \code{arch-chroot /mnt}
   
-  Then create a folder named \textit{efi} and chroout out by typing \inlineCode{exit}.\\
+  \section{Boot loader}
   
-  Run the following command to mount your boot partition to your newly created folder\footnote{I use same letters to denote same partitions, but this is not required. You may have the bootloader on another disk if you prefer.}:
+  The bootloader is essential  in order to boot your Arch installation without the use of any live medium, and the procedure in creating and configuring your choice of bootloader  is largely based upon whether you go with the legacy or the UEFI option. As of this, I will in this section divert from my initial promise to not divide a section into option specific sub sections.  
+  \subsection{UEFI}
+  \subsubsection{GRUB}
   
-  \code{mount /dev/sd\{a\}\{x\} /mnt/efi}
+  This is probably the most popular bootloader due to its wide array of options with regard to UEFI and BIOS systems, and especially multibooting support.\\
+  
+  grub bootloader requires the following two packages: \textit{grub} and \textit{efibootmgr}.\\
+  
+  Then ensure you have mounted your EFI System Partition (ESP) on \textit{/boot} and the partition that contains the ramdisk image and the current kernel in use. Then run the following command to create the binary needed for the UEFI BIOS to load your system:
+  
+  \code{grub-install --target=x86\_64-efi --efi-directory=ESP --bootloader-id=ID}
+  
+  Here we let ESP and ID denote the boot mount point and the name of the boot entry, respectively.\\
+  
+  Now you have to generate a configuration file that contains code to tell the BIOS what entries to show and what to do with those entries. This can be done by the following command:
+  
+  \code{grub-mkconfig -o /boot/grub/grub.cfg}
+  
+  If succesfully, you should now be able to boot your Arch installation without the need  for any live medium.\\
+  
+  \section{Important notes and hints}
+  
+  \subsection{Upgrading kernel during system upgrade}
+  
+  
+  
+  \section{Troubleshooting}
+  
+  
   
  	 
 \end{document}
